@@ -15,7 +15,6 @@ export default function Home() {
         }
       });
       response = await response.json();
-      console.log("RESPONSE : ", response);
       setFoodItems(response.dishes);
     } catch (error) {
       console.error('Error loading food items:', error);
@@ -25,7 +24,6 @@ export default function Home() {
   useEffect(() => {
     loadFoodItems()
   }, [])
-  console.log(foodItems)
 
   return (
     <div >
