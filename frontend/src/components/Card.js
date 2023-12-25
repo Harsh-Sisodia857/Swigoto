@@ -4,23 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import Carousel from './Carousel';
 import ReactStars from 'react-rating-stars-component';
 import { addToCart } from '../store/slice/cartSlice';
+import { useAlert } from 'react-alert'
+import "../App.css"
 
 export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
   const [qty, setQty] = useState(Quantity);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const alert = useAlert()
 
   const handleClick = () => {
     if (!localStorage.getItem('token')) {
       navigate('/login');
     } else {
       // console.log({ foodName, rating, ImgSrc, price, quantity: qty })
+      alert.show('Food Item Added To Cart')
       dispatch(addToCart({ foodName, rating, ImgSrc, price, quantity: qty }));
     }
   };
 
-  const handleIncrement = () => {
+  const increaseQuantity = () => {
     setQty(qty + 1);
+  };
+  const decreaseQuantity = () => {
+    setQty(qty - 1);
   };
 
   let finalPrice = parseInt(price);
@@ -44,18 +51,16 @@ export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
             edit={false}
             activeColor="#ffd700"
           />
-          ,
-          <div
-            className="container w-100 p-0"
-            style={{ height: '38px' }}
-          >
-            <button
-              className="btn btn-success me-2"
-              onClick={handleIncrement}
-              style={{ padding: '8px 12px', fontSize: '16px' }}
+          
+          <div className="d-flex" style={{alignItems : "baseline"}}>
+            <div
+              className="container w-100 p-0 detailsBlock-3-1-1"
+              style={{ height: '38px' }}
             >
-              + {qty}
-            </button>
+              <button onClick={decreaseQuantity}>-</button>
+              <input readOnly type="number" value={qty} />
+              <button onClick={increaseQuantity}>+</button>
+            </div>
             <div className="d-inline ms-2 h-100 w-20 fs-5">
               ₹{finalPrice}/-
             </div>

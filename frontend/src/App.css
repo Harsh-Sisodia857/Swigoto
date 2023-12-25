@@ -45,5 +45,49 @@
 }
 
 .initialPadding {
-  padding-top: 50px;
+  padding-top: 60px;
+}
+
+.emptyCart {
+  margin: auto;
+  text-align: center;
+  padding: 10vmax;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkOutBtn > button {
+  background-color: tomato;
+  color: white;
+  border: none;
+  padding: 0.8vmax 4vmax;
+  font: 300 0.8vmax "Roboto";
+  margin: 1vmax;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.detailsBlock-3-1-1 > button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.616);
+  padding: 0.5vmax;
+  cursor: pointer;
+  color: white;
+  transition: all 0.5s;
+}
+.detailsBlock-3-1-1 > button:hover {
+  background-color: rgba(0, 0, 0, 0.767);
+}
+
+.detailsBlock-3-1-1 > input {
+  border: none;
+  padding: 0.5vmax 0vmax;
+  width: 3vmax;
+  text-align: end;
+  outline: none;
+  font: 400 1.8vmax "Roboto";
+  color: rgba(0, 0, 0, 0.74);
 }
