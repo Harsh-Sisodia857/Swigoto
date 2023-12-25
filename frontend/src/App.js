@@ -9,10 +9,8 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-// import Navbar from './components/Navbar';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
-import { CartProvider } from './components/ContextReducer';
 import MyOrder from './screens/MyOrder';
 import Navbar from './components/Navbar.js';
 import Cart from './screens/Cart.js';
@@ -20,7 +18,6 @@ import Cart from './screens/Cart.js';
 
 function App() {
   return (
-    <CartProvider>
       <Router>
           <Navbar/>
           <Routes>
@@ -32,7 +29,6 @@ function App() {
             {/* <Route exact path="/myorder" element={<MyOrder />} /> */}
           </Routes>
       </Router>
-    </CartProvider>
   );
 }
 

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { useCart } from './ContextReducer';
-import Cart from '../screens/Cart';
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -14,7 +12,6 @@ export default function Navbar() {
     };
 
 
-    const items = useCart();
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -54,7 +51,7 @@ export default function Navbar() {
                     ) : (
                         <div>
                                 <Link className="btn bg-white text-success mx-2" to="/cart">
-                                <Badge color="secondary" badgeContent={items.length}>
+                                <Badge color="secondary">
                                     <ShoppingCartIcon />
                                 </Badge>
                                 Cart

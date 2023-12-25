@@ -21,16 +21,12 @@ async function uploadFileToCloudinary(file, folder) {
 
 const createDish = async (req, res) => {
     try {
-        console.log("Req body : ",req.body)
         const { name, rating, price } = req.body;
-        console.log(req.files)
-        console.log("NAME : ",name)
-        console.log("PRICE : ",price)
+        
         const images = req.files ? req.files.images.map(file => file.filename) : [];
         const dish = { name, rating, price }
         if (images.length) {
             const response = await uploadFileToCloudinary(images, "Dishes");
-            console.log("RESPONSE : ", response)
             const uploadedImages = await Promise.all(cloudinaryUploads);
             res.images = response.secure_url
         }
@@ -112,9 +108,7 @@ const deleteDish = async (req, res) => {
 
 const getAllDishes = async (req, res) => {
     try {
-        console.log("GET ALL DISH....")
         const dishes = await Dish.find();
-        console.log(dishes);
         return res.json({
             success : "true",
             dishes

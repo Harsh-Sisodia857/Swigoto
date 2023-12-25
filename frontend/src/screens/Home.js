@@ -37,12 +37,12 @@ export default function Home() {
         <div className='row mb-3'>
           {foodItems && foodItems.length !== 0 ? (
             foodItems.map(item => (
-              <div key={item.id} className='col-12 col-md-6 col-lg-3'>
+              <div key={item._id} className='col-12 col-md-6 col-lg-3'>
                 <Card foodName={item.name} item={item} rating={item.rating} price={item.price} Quantity={1} ImgSrc={item.images} />
               </div>
             ))
           ) : (
-            <div>No Such Data</div>
+            <div className='text-center'>No Such Data</div>
           )}
         </div>
       </div>

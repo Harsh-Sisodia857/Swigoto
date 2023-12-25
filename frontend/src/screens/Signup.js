@@ -32,9 +32,7 @@ export default function Signup() {
 
     fetchLocation()
       .then((coords) => {
-        console.log('Latitude:', coords.latitude);
-        console.log('Longitude:', coords.longitude);
-
+    
         const { latitude, longitude } = coords;
 
         return fetch('http://localhost:4000/api/user/getlocation', {
@@ -50,7 +48,6 @@ export default function Signup() {
         if (json.success) {
           // Check if location contains 'undefined', and remove it
           const cleanedLocation = json.location.replace(/undefined,/g, '');
-          console.log("Location data : ", cleanedLocation);
           setFetchedLocation(cleanedLocation);
         } else {
           alert(`Error fetching location: ${json.error}`);
@@ -78,7 +75,6 @@ export default function Signup() {
       }),
     });
     const json = await response.json();
-    console.log(json);
     if (json.success) {
       localStorage.setItem('token', json.authToken);
       navigate('/login');
