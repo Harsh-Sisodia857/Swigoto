@@ -27,6 +27,10 @@ export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
     setQty(qty + 1);
   };
   const decreaseQuantity = () => {
+    if (qty <= 1) {
+      alert.show("Food Item Never Be Zero")
+      return;
+    }
     setQty(qty - 1);
   };
 
@@ -66,12 +70,8 @@ export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
             </div>
           </div>
           <hr />
-          <button
-            className="btn btn-success justify-center ms-2"
-            onClick={handleClick}
-          >
-            Add to Cart
-          </button>
+          <button class="button-42" onClick={handleClick}>Add to Cart</button>
+
         </div>
       </div>
     </div>
