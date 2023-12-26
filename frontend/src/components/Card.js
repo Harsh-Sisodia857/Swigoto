@@ -12,13 +12,12 @@ export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const alert = useAlert()
-
   const handleClick = () => {
     if (!localStorage.getItem('token')) {
       navigate('/login');
     } else {
-      // console.log({ foodName, rating, ImgSrc, price, quantity: qty })
       alert.show('Food Item Added To Cart')
+      console.log("Payload:", { foodName, rating, ImgSrc, price, quantity: qty });
       dispatch(addToCart({ foodName, rating, ImgSrc, price, quantity: qty }));
     }
   };

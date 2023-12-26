@@ -14,6 +14,8 @@ import Signup from './screens/Signup';
 import MyOrder from './screens/MyOrder';
 import Navbar from './components/Navbar.js';
 import Cart from './screens/Cart.js';
+import Shipping from './screens/Shipping.js';
+import ConfirmOrder from './screens/ConfirmOrder.js';
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<Signup />} />
             <Route exact path="/cart" element={<Cart />} />
+            <Route exact path="/shipping" element={<Shipping />} />
+            <Route exact path="/order/confirm" element={<ConfirmOrder />} />
             {/* TO DO LATER  */}
             {/* <Route exact path="/myorder" element={<MyOrder />} /> */}
           </Routes>

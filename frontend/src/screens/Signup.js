@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import '../App.css';
 
 export default function Signup() {
-  const [credentials, setCredentials] = useState({ name: '', email: '', password: '', location: '' });
+  const [credentials, setCredentials] = useState({ name: '', email: '', password: '', location: {} });
   const [fetchedLocation, setFetchedLocation] = useState(null);
   const navigate = useNavigate();
 
@@ -47,8 +47,8 @@ export default function Signup() {
         const json = await response.json();
         if (json.success) {
           // Check if location contains 'undefined', and remove it
-          const cleanedLocation = json.location.replace(/undefined,/g, '');
-          setFetchedLocation(cleanedLocation);
+          const Location = json.location;
+          setFetchedLocation(Location);
         } else {
           alert(`Error fetching location: ${json.error}`);
         }
@@ -108,9 +108,9 @@ export default function Signup() {
             <label htmlFor="location" className="form-label text-white">
               Location
             </label>
-            <fieldset>
+            {/* <fieldset>
               <input type="text" className="form-control" name="location" value={credentials.location} placeholder="Click below for fetching location" onChange={(e) => setCredentials({ ...credentials, location: e.target.value })} aria-describedby="emailHelp" />
-            </fieldset>
+            </fieldset> */}
           </div>
           <div className="m-3">
             <button type="button" onClick={handleClick} name="location" className="btn btn-success" style={{ display: 'flex', alignItems: 'center' }}>

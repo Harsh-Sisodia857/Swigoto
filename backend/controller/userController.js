@@ -82,7 +82,10 @@ const getUser = async (req, res) => {
     try {
         const userId = req.user.id;
         const user = await User.findById(userId).select("-password");
-        res.send(user);
+        res.json({
+            success : true,
+            user
+        });
     } catch (error) {
         console.error(error.message);
         res.send("Server Error");
@@ -95,21 +98,35 @@ const getLocation = async (req, res) => {
         let lat = req.body.lat;
         let long = req.body.long;
         console.log(lat, long);
+        
         let location = await axios
             .get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&key=74c89b3be64946ac96d777d08b878d43`)
             .then(async response => {
                 let res = response.data.results[0].components;
-                let { village, county, state_district, state, postcode } = res;
-                return String(`${village},${county},${state_district},${state}\n${postcode}`);
+                const sanitizeValue = value => value ?? "";
+                let { suburb : address, country, city, state, postcode : pincode } = res;
+
+                let locationObject = {
+                    address: sanitizeValue(address),
+                    country: sanitizeValue(country),
+                    city: sanitizeValue(city),
+                    state: sanitizeValue(state),
+                    pincode: sanitizeValue(pincode)
+                };
+
+                return locationObject;
             })
             .catch(error => {
                 console.error(error);
             });
-        res.send({ location });
+        res.json({
+            success : true,
+            location
+        });
     } catch (error) {
         console.error(error.message);
-        res.send("Server Error");
-    }
+        res.status(500).json({ error });
+}
 };
 
 // Function to get food data

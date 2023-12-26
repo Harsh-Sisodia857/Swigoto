@@ -22,7 +22,7 @@ router.post('/login', [
 router.get('/getuser', fetchUser, getUser);
 
 // Route: /api/getlocation
-router.get('/getlocation', getLocation);
+router.post('/getlocation', getLocation);
 
 // Route: /api/foodData
 router.get('/foodData', getFoodData);
