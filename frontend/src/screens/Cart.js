@@ -18,6 +18,7 @@ export default function Cart() {
   };
 
   const handleDelete = (food) => {
+    console.log(food)
     alert.show('Food Item Added To Cart')
     dispatch(removeFromCart(food))
   }

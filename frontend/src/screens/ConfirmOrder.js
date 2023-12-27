@@ -8,9 +8,7 @@ const ConfirmOrder = () => {
   const { shipping } = useSelector((state) => state.shipping);
   const shippingInfo = shipping[0];
   const { cart: cartItems } = useSelector((state) => state.cart);
- 
-
-  const navigate = useNavigate();
+  console.log(cartItems)
   const [user, setUser] = useState(null);
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -49,7 +47,7 @@ const ConfirmOrder = () => {
     ? `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`
     : "";
 
-  const proceedToPayment = () => {
+  const proceedToPayment = async () => {
     const data = {
       subtotal,
       shippingCharges,
@@ -57,10 +55,54 @@ const ConfirmOrder = () => {
       totalPrice,
     };
 
-    sessionStorage.setItem("orderInfo", JSON.stringify(data));
+    try {
+      const response = await fetch("http://localhost:4000/api/order", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+        body: JSON.stringify({
+          shippingInfo: {
+            address: shippingInfo?.address || "",
+            city: shippingInfo?.city || "",
+            state: shippingInfo?.state || "",
+            country: shippingInfo?.country || "",
+            pinCode: shippingInfo?.pinCode || "",
+            phoneNo: shippingInfo?.phoneNo || "",
+          },
+          foodItems: cartItems.map(item => ({
+            name: item.foodName,
+            price: item.price,
+            quantity: item.quantity,
+            dish: item.product,
+          })),
+          paymentInfo: {
+            id : "658841961d7005905bf5a4cf",
+            status : "Success"
+          },
+          itemsPrice: subtotal,
+          taxPrice: tax,
+          shippingPrice: shippingCharges,
+          totalPrice: totalPrice,
+        }),
+      });
 
-    navigate("/payment");
+      const json = await response.json();
+      if (json.success) {
+        console.log("Order details saved successfully:", json);
+        // Continue with payment or navigation logic here
+        sessionStorage.setItem("orderInfo", JSON.stringify(data));
+        console.log("Please Pay The Bill.....")
+        // TO DO ----> navigate("/payment");
+      } else {
+        console.log("Error saving order details:", json.error);
+      }
+    } catch (error) {
+      console.error("Error saving order details:", error);
+    }
   };
+
 
   return (
     <Fragment>

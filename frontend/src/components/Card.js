@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Carousel from './Carousel';
 import ReactStars from 'react-rating-stars-component';
-import { addToCart } from '../store/slice/cartSlice';
+import { addToCart, removeFromCart } from '../store/slice/cartSlice';
 import { useAlert } from 'react-alert'
 import "../App.css"
 
-export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
+export default function Card({ id, foodName, rating, ImgSrc, price, Quantity }) {
   const [qty, setQty] = useState(Quantity);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  const isInCart = cart.some((foodItem) => foodItem.id === id);
   const alert = useAlert()
   const handleClick = () => {
     if (!localStorage.getItem('token')) {
       navigate('/login');
     } else {
-      alert.show('Food Item Added To Cart')
-      console.log("Payload:", { foodName, rating, ImgSrc, price, quantity: qty });
-      dispatch(addToCart({ foodName, rating, ImgSrc, price, quantity: qty }));
+      if (isInCart) {
+        alert.show('Food Item Removed From Cart')
+        console.log("Payload:", { id });
+        dispatch(removeFromCart({ id })); 
+      } else {
+        alert.show('Food Item Added To Cart')
+        console.log("Payload:", { id, foodName, rating, ImgSrc, price, quantity: qty });
+        dispatch(addToCart({ id, foodName, rating, ImgSrc, price, quantity: qty }));       
+      }
     }
   };
 
@@ -69,7 +77,8 @@ export default function Card({ foodName, rating, ImgSrc, price, Quantity }) {
             </div>
           </div>
           <hr />
-          <button class="button-42" onClick={handleClick}>Add to Cart</button>
+          <button class="button-42" onClick={handleClick}>
+           { isInCart ? "Remove From Cart" : "Add to Cart" }</button>
 
         </div>
       </div>

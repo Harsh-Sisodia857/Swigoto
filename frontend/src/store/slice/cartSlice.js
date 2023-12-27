@@ -19,7 +19,7 @@ export const CartSlice = createSlice({
         },
         removeFromCart: (state, action) => {
             const updatedCart = state.cart.filter(
-                (item) => item.foodName !== action.payload.foodName
+                (item) => item.id !== action.payload.id
             );
             localStorage.setItem("cart", JSON.stringify(updatedCart));
 

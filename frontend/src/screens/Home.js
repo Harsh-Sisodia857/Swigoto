@@ -38,7 +38,7 @@ export default function Home() {
           {foodItems && foodItems.length !== 0 ? (
             foodItems.map(item => (
               <div key={item._id} className='col-12 col-md-6 col-lg-3'>
-                <Card foodName={item.name} item={item} rating={item.rating} price={item.price} Quantity={1} ImgSrc={item.images} />
+                <Card id={item._id} foodName={item.name} item={item} rating={item.rating} price={item.price} Quantity={1} ImgSrc={item.images} />
               </div>
             ))
           ) : (
