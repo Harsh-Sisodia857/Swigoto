@@ -2,16 +2,31 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { useDispatch } from 'react-redux';
+import { setSearchQuery, setFilterQuery } from '../store/slice/searchQuerySlice';
+import Select from 'react-select';
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [query, setQuery] = useState('');
+    const [selectedFilter, setSelectedFilter] = useState(null);
+    const filterOptions = [
+        { value: 'dishes', label: 'Dishes' },
+        { value: 'restaurant', label: 'Restaurant' },
+    ];
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/login');
     };
 
-
+    const handleSearch = () => {
+        dispatch(setSearchQuery(query));
+        dispatch(setFilterQuery(selectedFilter?.value));
+        console.log('Search Query:', query);
+        console.log('Selected Filter:', selectedFilter?.value);
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -38,6 +53,33 @@ export default function Navbar() {
                         ) : (
                             ''
                         )}
+                        <li>
+                            <div className="input-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Search..."
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
+                                <Select
+                                    className="filter-select"
+                                    placeholder="Filter by..."
+                                    value={selectedFilter}
+                                    options={filterOptions}
+                                    onChange={(selectedOption) => setSelectedFilter(selectedOption)}
+                                />
+                                <button
+                                    className="btn btn-outline-success"
+                                    type="button"
+                                    onClick={handleSearch}
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </li>
+                        
+
                     </ul>
                     {!localStorage.getItem('token') ? (
                         <form className="d-flex">

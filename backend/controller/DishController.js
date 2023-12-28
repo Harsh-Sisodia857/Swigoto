@@ -21,10 +21,10 @@ async function uploadFileToCloudinary(file, folder) {
 
 const createDish = async (req, res) => {
     try {
-        const { name, rating, price } = req.body;
+        const { name, rating, price, restaurant: restaurantId } = req.body;
         
         const images = req.files ? req.files.images.map(file => file.filename) : [];
-        const dish = { name, rating, price }
+        const dish = { name, rating, price, restaurant: restaurantId };
         if (images.length) {
             const response = await uploadFileToCloudinary(images, "Dishes");
             const uploadedImages = await Promise.all(cloudinaryUploads);
@@ -35,8 +35,7 @@ const createDish = async (req, res) => {
             return res.status(400).json({ error: 'Invalid request data' });
         }
 
-
-        const { restaurantId } = req.body;
+        console.log(restaurantId)
         const restaurant = await Restaurant.findById(restaurantId);
 
         // Check if the restaurant exists
@@ -108,9 +107,28 @@ const deleteDish = async (req, res) => {
 
 const getAllDishes = async (req, res) => {
     try {
-        const dishes = await Dish.find();
+        let query = {};
+        if (req.query.dish) {
+            query.name = new RegExp(req.query.dish, 'i');
+        }
+
+        if (req.query.restaurant) {
+            const matchingRestaurants = await Restaurant.find({
+                name: new RegExp(req.query.restaurant, 'i')
+            });
+
+            if (matchingRestaurants.length === 0) {
+                return res.status(404).json({ error: 'No matching restaurants found' });
+            }
+
+            query.restaurant = { $in: matchingRestaurants.map(restaurant => restaurant._id) };
+        }
+
+        console.log(query)
+    
+        const dishes = await Dish.find(query).populate('restaurant');
         return res.json({
-            success : "true",
+            success: "true",
             dishes
         });
     } catch (error) {
@@ -118,6 +136,7 @@ const getAllDishes = async (req, res) => {
         res.status(500).json({ error: 'Server Error' });
     }
 };
+
 
 module.exports = {
     createDish,
