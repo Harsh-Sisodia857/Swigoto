@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const fetchUser = require('../middleware/fetchdetails');
+const { authenticated } = require('../middleware/auth');
 const { loginUser, createUser, getUser, getLocation, getFoodData, orderData, getMyOrderData } = require('../controller/userController');
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.post('/login', [
 ], loginUser);
 
 // Route: /api/getuser
-router.get('/getuser', fetchUser, getUser);
+router.get('/getuser', authenticated, getUser);
 
 // Route: /api/getlocation
 router.post('/getlocation', getLocation);

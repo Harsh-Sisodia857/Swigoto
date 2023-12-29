@@ -1,8 +1,7 @@
-const { body, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
-const fetch = require('../middleware/fetchdetails');
 const User = require('../models/User');
 
 const jwtSecret = process.env.JWT_SECRET;

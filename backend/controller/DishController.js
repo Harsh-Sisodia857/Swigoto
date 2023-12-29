@@ -99,7 +99,11 @@ const deleteDish = async (req, res) => {
         if (!deletedDish) {
             return res.status(404).json({ error: 'Dish not found' });
         }
-        res.json(deletedDish);
+        res.json({
+            success: true,
+            message : "Deleted Successfully",
+            deletedDish
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

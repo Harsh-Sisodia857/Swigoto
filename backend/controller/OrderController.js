@@ -11,7 +11,6 @@ exports.newOrder = async (req, res, next) => {
             shippingPrice,
             totalPrice,
         } = req.body;
-        console.log("Req body : ",req.body)
         const order = await Order.create({
             shippingInfo,
             FoodItems,
@@ -23,13 +22,12 @@ exports.newOrder = async (req, res, next) => {
             paidAt: Date.now(),
             user: req.user.id,
         });
-        console.log("Req body : ",req.body);
         res.status(201).json({
             success: true,
             order,
         });
     } catch (error) {
-        console.error('Error in newOrder:', error.message);
+        console.error('Error in newOrder:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
