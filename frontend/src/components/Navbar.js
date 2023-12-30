@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setFilterQuery } from '../store/slice/searchQuerySlice';
 import Select from 'react-select';
 
 export default function Navbar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+    const role = user.role;
     const [query, setQuery] = useState('');
     const [selectedFilter, setSelectedFilter] = useState(null);
     const filterOptions = [
@@ -24,8 +26,8 @@ export default function Navbar() {
     const handleSearch = () => {
         dispatch(setSearchQuery(query));
         dispatch(setFilterQuery(selectedFilter?.value));
-        console.log('Search Query:', query);
-        console.log('Selected Filter:', selectedFilter?.value);
+        // console.log('Search Query:', query);
+        // console.log('Selected Filter:', selectedFilter?.value);
     };
 
     return (
@@ -44,7 +46,26 @@ export default function Navbar() {
                                 Home
                             </Link>
                         </li>
-                        {localStorage.getItem('token') ? (
+                        {role === 'admin' && (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link fs-5 mx-3" to="/createDish">
+                                        Create Dish
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link fs-5 mx-3" to="/createRestaurant">
+                                        Create Restaurant
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link fs-5 mx-3" to="/deleteRestaurant">
+                                        Delete Restaurant
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                        {role == 'user' && localStorage.getItem('token') ? (
                             <li className="nav-item">
                                 <Link className="nav-link fs-5 mx-3 active" aria-current="page" to="/myorder">
                                     My Orders
@@ -78,7 +99,7 @@ export default function Navbar() {
                                 </button>
                             </div>
                         </li>
-                        
+
 
                     </ul>
                     {!localStorage.getItem('token') ? (
@@ -92,13 +113,14 @@ export default function Navbar() {
                         </form>
                     ) : (
                         <div>
-                                <Link className="btn bg-white text-success mx-2" to="/cart">
-                                <Badge color="secondary">
-                                    <ShoppingCartIcon />
-                                </Badge>
-                                Cart
-                            </Link>
-
+                            {
+                                role == 'user' && <Link className="btn bg-white text-success mx-2" to="/cart">
+                                    <Badge color="secondary">
+                                        <ShoppingCartIcon />
+                                    </Badge>
+                                    Cart
+                                </Link>
+                            }
 
                             <button onClick={handleLogout} className="btn bg-white text-success">
                                 Logout

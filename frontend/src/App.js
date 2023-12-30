@@ -16,6 +16,9 @@ import Navbar from './components/Navbar.js';
 import Cart from './screens/Cart.js';
 import Shipping from './screens/Shipping.js';
 import ConfirmOrder from './screens/ConfirmOrder.js';
+import CreateDish from './screens/CreateDish';
+import CreateRestaurant from './screens/CreateRestaurant.js';
+import DeleteRestaurant from './screens/DeleteRestaurant.js';
 
 
 function App() {
@@ -29,6 +32,9 @@ function App() {
             <Route exact path="/cart" element={<Cart />} />
             <Route exact path="/shipping" element={<Shipping />} />
             <Route exact path="/order/confirm" element={<ConfirmOrder />} />
+            <Route exact path="/createDish" element={<CreateDish />} />
+            <Route exact path="/createRestaurant" element={<CreateRestaurant />} />
+            <Route exact path="/deleteRestaurant" element={<DeleteRestaurant />} />
             {/* TO DO LATER  */}
             {/* <Route exact path="/myorder" element={<MyOrder />} /> */}
           </Routes>

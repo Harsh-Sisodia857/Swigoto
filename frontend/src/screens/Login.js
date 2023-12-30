@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import "../App.css"
+import { useDispatch } from 'react-redux';
+import { setUser } from '../store/slice/userSlice';
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,12 +24,13 @@ export default function Login() {
     if (json.success) {
       localStorage.setItem('userEmail', credentials.email);
       localStorage.setItem('token', json.authToken);
+      dispatch(setUser(json.userData));
+      console.log(json.userData);
       navigate('/');
     } else {
       alert('Enter Valid Credentials');
     }
   };
-
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
