@@ -7,6 +7,6 @@ router.post('/create',authenticated, authorizedRoles('admin'), dishController.cr
 router.get('/:dishId',authenticated, authorizedRoles('admin'), dishController.getDishById);
 router.put('/:dishId',authenticated, authorizedRoles('admin'), dishController.updateDish);
 router.delete('/:dishId',authenticated, authorizedRoles('admin'), dishController.deleteDish);
-router.get("/",authenticated, authorizedRoles('admin'), dishController.getAllDishes);
+router.get("/", dishController.getAllDishes);
 
 module.exports = router;

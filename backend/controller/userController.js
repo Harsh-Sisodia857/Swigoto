@@ -67,9 +67,13 @@ const loginUser = async (req, res) => {
         }
         success = true;
         const authToken = jwt.sign(data, jwtSecret);
-        res.json({ success, authToken })
-
-
+        // console.log("AUTH TOKEN : ",authToken)
+        const userData = {
+            id: user.id,
+            name : user.name,
+            role : user.role
+        }
+        res.json({ success, authToken, userData })
     } catch (error) {
         console.error(error.message)
         res.send("Server Error")

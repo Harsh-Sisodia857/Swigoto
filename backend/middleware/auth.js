@@ -25,7 +25,6 @@ exports.authenticated = async (req,res,next)=>{
 exports.authorizedRoles = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
-            console.log(req.user)
             return res.status(403).json({
                 error: `You are not allowed to accesss this resource`
             })
