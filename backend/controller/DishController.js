@@ -1,15 +1,8 @@
 const Restaurant = require('../models/Restaurant');
 const Dish = require('../models/Dishes');
-const multer = require('multer');
-const path = require('path');
 const cloudinary = require('cloudinary').v2;
+const path = require('path');
 
-// Cloudinary configuration
-cloudinary.config({
-    cloud_name: 'Dishes',
-    api_key: '336255497325835',
-    api_secret: 'OqaczYufc8bvSA4stZ0_qWSnGVM',
-});
 
 
 async function uploadFileToCloudinary(file, folder) {
@@ -22,23 +15,23 @@ async function uploadFileToCloudinary(file, folder) {
 const createDish = async (req, res) => {
     try {
         const { name, rating, price, restaurant: restaurantId } = req.body;
-        
-        const images = req.files ? req.files.images.map(file => file.filename) : [];
+        console.log(req.files)
+        const images = req.files?.images;
+        console.log("Images : ",images)
         const dish = { name, rating, price, restaurant: restaurantId };
-        if (images.length) {
+        if (images) {
             const response = await uploadFileToCloudinary(images, "Dishes");
-            const uploadedImages = await Promise.all(cloudinaryUploads);
-            res.images = response.secure_url
+            console.log("Response:", response);
+            dish.images = response.secure_url;
         }
+
         // Validate the incoming data
         if (!name || !price) {
             return res.status(400).json({ error: 'Invalid request data' });
         }
 
-        console.log(restaurantId)
         const restaurant = await Restaurant.findById(restaurantId);
 
-        // Check if the restaurant exists
         if (!restaurant) {
             return res.status(404).json({ error: 'Restaurant not found' });
         }
@@ -47,10 +40,7 @@ const createDish = async (req, res) => {
         const newDish = new Dish(dish);
         const savedDish = await newDish.save();
 
-        // Update the restaurant with the new dish
-        restaurant.dishes.push(savedDish._id);
-        await restaurant.save();
-
+    
         res.status(201).json(savedDish);
     } catch (error) {
         console.error('Error in createDish:', error);
