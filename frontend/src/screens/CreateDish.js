@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAlert } from 'react-alert'
 import './CreateDish.css';
 
 const CreateDish = () => {
@@ -9,6 +10,7 @@ const CreateDish = () => {
   const [restaurantName, setRestaurantName] = useState('');
   const [restaurantId, setRestaurantId] = useState('');
   const [searchResult, setSearchResult] = useState(null);
+  const alert = useAlert()
 
   const handleCreateDish = async () => {
     try {
@@ -28,10 +30,9 @@ const CreateDish = () => {
       });
 
       const data = await response.json();
-
-      console.log('Dish created successfully:', data);
+      alert.show('Dish Created Successfully')
     } catch (error) {
-      console.error('Error creating dish:', error);
+      alert.error('Error while creating dish');
     }
   };
 

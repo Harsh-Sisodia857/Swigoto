@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useAlert } from 'react-alert'
 import './DeleteRestaurant.css';
 
 const RestaurantTable = () => {
     const [restaurants, setRestaurants] = useState([]);
+    const alert = useAlert()
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -16,10 +18,9 @@ const RestaurantTable = () => {
                 });
 
                 const {data} = await response.json();
-                console.log(data);
                 setRestaurants(data);
             } catch (error) {
-                console.error('Error fetching restaurants:', error);
+                alert.error('Error while fetching restaurants');
             }
         };
 
@@ -39,11 +40,12 @@ const RestaurantTable = () => {
             console.log("RESPONSE : ", deletedRestaurant)
             if (success) {
                 setRestaurants((prevRestaurants) => prevRestaurants.filter((r) => r._id !== deletedRestaurant._id));
+                alert.show("Restaurant Deleted Successfully")
             } else {
-                console.error('Failed to delete restaurant');
+                alert.error('Failed to delete restaurant');
             }
         } catch (error) {
-            console.error('Error deleting restaurant:', error);
+            alert.error('Error deleting restaurant');
         }
     };
 

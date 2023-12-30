@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useAlert } from 'react-alert'
 import './createRestaurant.css';
 
 const CreateRestaurantForm = () => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [rating, setRating] = useState('');
+    const alert = useAlert()
 
     const handleCreateRestaurant = async () => {
         try {
@@ -21,9 +23,9 @@ const CreateRestaurantForm = () => {
                 })
             });
             const res = await response.json();
-            console.log('Restaurant created successfully:', res);
+            alert.show('Restaurant created successfully');
         } catch (error) {
-            console.error('Error creating restaurant:', error);
+            alert.error('Error while creating restaurant');
         }
     };
 
