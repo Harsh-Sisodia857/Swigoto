@@ -17,12 +17,11 @@ const CreateDish = () => {
       myForm.append('price', price);
       myForm.append('rating', rating);
       myForm.append('restaurant', restaurantId);
-      myForm.append('images', images);
+      myForm.append('images', images[0]);
       console.log("My form : ",myForm)
       const response = await fetch('http://localhost:4000/api/dishes/create', {
         method: 'POST',
         headers: {
-          "Content-Type": "multipart/form-data",
           'auth-token': localStorage.getItem('token'),
         },
         body: myForm
