@@ -1,0 +1,93 @@
+.create-dish-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.result-item span {
+  margin-bottom: 5px;
+}
+
+.result-id {
+  color: #555;
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
+
+
+.sidebar{
+    width: 50%;
+}
+
+.form-section{
+    width: 50%;
+}
+
+.search-box{
+    max-width: 90%;
+}
+
+.container{
+    display: flex;
+    /* width: 100%; */
+    align-items: start;
+    justify-content: space-between
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group > button{
+    margin: 10px 0px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+.initialMargin {
+  margin-top: 110px;
+}
