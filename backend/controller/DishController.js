@@ -1,10 +1,11 @@
 const Restaurant = require('../models/Restaurant');
 const Dish = require('../models/Dishes');
+// import cloudinary
 const cloudinary = require('cloudinary').v2;
 const path = require('path');
 
 
-
+// step -- 6
 async function uploadFileToCloudinary(file, folder) {
     const options = { folder };
     // when we upload a file using express file upload there was there was several key is included by express file upload module one of them was tempFilePath which indicate a temporary location in system to upload file and delete it later on after uploading to cloudinary 
@@ -16,9 +17,11 @@ const createDish = async (req, res) => {
     try {
         const { name, rating, price, restaurant: restaurantId } = req.body;
         console.log(req.files)
+        // step 4 -- get file using req.files.(Whatever name you have give in model)
         const images = req.files?.images;
         console.log("Images : ",images)
         const dish = { name, rating, price, restaurant: restaurantId };
+        // step 5 -- if uploading image is not required then use if here else remove if
         if (images) {
             const response = await uploadFileToCloudinary(images, "Dishes");
             console.log("Response:", response);

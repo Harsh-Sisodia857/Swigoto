@@ -12,19 +12,20 @@ const CreateDish = () => {
 
   const handleCreateDish = async () => {
     try {
+      const myForm = new FormData();
+      myForm.append('name', name);
+      myForm.append('price', price);
+      myForm.append('rating', rating);
+      myForm.append('restaurant', restaurantId);
+      myForm.append('images', images);
+      console.log("My form : ",myForm)
       const response = await fetch('http://localhost:4000/api/dishes/create', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "multipart/form-data",
           'auth-token': localStorage.getItem('token'),
         },
-        body: JSON.stringify({
-          name,
-          price,
-          images,
-          rating,
-          restaurantId,
-        }),
+        body: myForm
       });
 
       const data = await response.json();
@@ -34,6 +35,20 @@ const CreateDish = () => {
       console.error('Error creating dish:', error);
     }
   };
+
+  const handleFileChange = (e) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImages(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    
+  };
+
 
   const handleSearchRestaurant = async () => {
     try {
@@ -116,7 +131,8 @@ const CreateDish = () => {
               <input
                 type="file"
                 id="images"
-                onChange={(e) => setImages(e.target.files)}
+                name="images"
+                onChange={handleFileChange}
               />
             </div>
             <div className="form-group">
