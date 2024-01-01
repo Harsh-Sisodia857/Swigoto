@@ -1,24 +1,27 @@
 .custom-loader {
-  width: 50px;
-  height: 50px;
-  display: grid;
-  animation: s4 4s infinite;
-}
-.custom-loader::before,
-.custom-loader::after {    
-  content:"";
-  grid-area: 1/1;
-  border:8px solid;
+  --d:44px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  border-color:#766DF4 #766DF4 #0000 #0000;
-  mix-blend-mode: darken;
-  animation: s4 1s infinite linear;
-}
-.custom-loader::after {
-  border-color:#0000 #0000 #E4E4ED #E4E4ED;
-  animation-direction: reverse;
+  margin-top: 50px;
+  color: #8C67F4;
+  box-shadow: 
+    calc(1*var(--d))      calc(0*var(--d))     0 0,
+    calc(0.707*var(--d))  calc(0.707*var(--d)) 0 2px,
+    calc(0*var(--d))      calc(1*var(--d))     0 4px,
+    calc(-0.707*var(--d)) calc(0.707*var(--d)) 0 6px,
+    calc(-1*var(--d))     calc(0*var(--d))     0 8px,
+    calc(-0.707*var(--d)) calc(-0.707*var(--d))0 10px,
+    calc(0*var(--d))      calc(-1*var(--d))    0 12px;
+  animation: s7 1s infinite steps(8);
 }
 
-@keyframes s4{ 
-  100%{transform: rotate(1turn)}
+.loader{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes s7 {
+  100% {transform: rotate(1turn)}
 }
