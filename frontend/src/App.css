@@ -48,6 +48,10 @@
   padding-top: 60px;
 }
 
+.initialMargin{
+  margin-top: 100px;
+}
+
 .emptyCart {
   margin: auto;
   text-align: center;
@@ -106,7 +110,7 @@
   line-height: 40px;
   outline: 0;
   overflow: hidden;
-  padding: 0 20px;
+  padding: 0px 20px;
   pointer-events: auto;
   position: relative;
   text-align: center;

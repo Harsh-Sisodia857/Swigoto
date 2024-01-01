@@ -34,7 +34,7 @@ const createDish = async (req, res) => {
         }
 
         const restaurant = await Restaurant.findById(restaurantId);
-
+        console.log("Req.body : ", req.body);
         if (!restaurant) {
             return res.status(404).json({ error: 'Restaurant not found' });
         }
@@ -92,7 +92,7 @@ const deleteDish = async (req, res) => {
         if (!deletedDish) {
             return res.status(404).json({ error: 'Dish not found' });
         }
-        res.json({
+        return res.json({
             success: true,
             message : "Deleted Successfully",
             deletedDish
@@ -130,7 +130,10 @@ const getAllDishes = async (req, res) => {
         });
     } catch (error) {
         console.error('Error in getAllDishes:', error);
-        res.status(500).json({ error: 'Server Error' });
+        res.status(500).json({
+            success : false,
+            error: 'Server Error'
+        });
     }
 };
 

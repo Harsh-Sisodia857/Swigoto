@@ -21,10 +21,19 @@ export const foodItemSlice = createSlice({
             state.status = 'failed';
             state.error = action.payload.error;
         },
+        updateFoodItem: (state, action) => {
+            const updatedItem = action.payload;
+            const index = state.dishes.findIndex((item) => item._id === updatedItem._id);
+
+            if (index !== -1) {
+                state.dishes[index].rating = updatedItem.rating;
+                state.dishes[index].price = updatedItem.price;
+            }
+        }
     },
 });
 
-export const { setFoodItems, setError } = foodItemSlice.actions;
+export const { setFoodItems, setError, updateFoodItem } = foodItemSlice.actions;
 export default foodItemSlice.reducer;
 
 export const loadFoodItems = () => async (queryParams) => {
@@ -45,7 +54,6 @@ export const loadFoodItems = () => async (queryParams) => {
 
 export const setFoodItemAfterDeletion = (id) => async (dispatch, getState) => {
     const { dishes } = getState().foodItem;
-    console.log(dishes)
     const filteredFoodItem = dishes.filter((item) => item._id !== id);
     dispatch(setFoodItems(filteredFoodItem));
 };

@@ -9,6 +9,8 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { useEffect } from 'react';
+import WebFont from 'webfontloader';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import MyOrder from './screens/MyOrder';
@@ -19,26 +21,38 @@ import ConfirmOrder from './screens/ConfirmOrder.js';
 import CreateDish from './screens/CreateDish';
 import CreateRestaurant from './screens/CreateRestaurant.js';
 import DeleteRestaurant from './screens/DeleteRestaurant.js';
+import ProtectedRoute from './components/ProtectedRoute.js';
+import AdminRoute from './components/AdminRoute.js';
 
 
 function App() {
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ["Roboto", "Open Sans", "Lato"]
+      }
+    })
+  }, [])
   return (
-      <Router>
-          <Navbar/>
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/signup" element={<Signup />} />
-            <Route exact path="/cart" element={<Cart />} />
-            <Route exact path="/shipping" element={<Shipping />} />
-            <Route exact path="/order/confirm" element={<ConfirmOrder />} />
-            <Route exact path="/createDish" element={<CreateDish />} />
-            <Route exact path="/createRestaurant" element={<CreateRestaurant />} />
-            <Route exact path="/deleteRestaurant" element={<DeleteRestaurant />} />
-            {/* TO DO LATER  */}
-            {/* <Route exact path="/myorder" element={<MyOrder />} /> */}
-          </Routes>
-      </Router>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+        <Route exact path="/shipping" element={<ProtectedRoute><Shipping /></ProtectedRoute>} />
+        <Route exact path="/order/confirm" element={<ProtectedRoute><ConfirmOrder /></ProtectedRoute>} />
+        <Route exact path="/myorder" element={<ProtectedRoute><MyOrder /></ProtectedRoute>} />
+
+        {/* Admin Routes */}
+        <Route exact path="/createDish" element={<AdminRoute><CreateDish /></AdminRoute>} />
+        <Route exact path="/createRestaurant" element={<AdminRoute><CreateRestaurant /></AdminRoute>} />
+        <Route exact path="/deleteRestaurant" element={<AdminRoute><DeleteRestaurant /></AdminRoute>} />
+
+      </Routes>
+
+    </Router>
   );
 }
 

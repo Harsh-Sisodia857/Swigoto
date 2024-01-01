@@ -35,9 +35,46 @@ exports.newOrder = async (req, res, next) => {
 // Function to get user's order data
 module.exports.getMyOrderData = async (req, res) => {
     try {
-        let eId = await Order.findOne({ 'email': req.body.email });
-        res.json({ orderData: eId });
+        let eId = await Order.find({ 'user': req.user._id });
+        if (!eId) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+        res.json({
+            success: true,
+            orderData: eId
+        });
     } catch (error) {
-        res.send("Error", error.message);
+        res.json({
+            success: false,
+            message : "Failed To Fetch Order",
+            error: error.message
+        });
+    }
+};
+
+// Function to update the status of an order
+exports.updateOrderStatus = async (req, res, next) => {
+    try {
+        const orderId = req.params.orderId; 
+        const newStatus = req.body.status; 
+
+        const validStatusValues = ['Processing', 'Shipped', 'Delivered'];
+        if (!validStatusValues.includes(newStatus)) {
+            return res.status(400).json({ error: 'Invalid status value' });
+        }
+
+        const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: newStatus }, { new: true });
+
+        if (!updatedOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        res.json({
+            success: true,
+            updatedOrder,
+        });
+    } catch (error) {
+        console.error('Error in updateOrderStatus:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };

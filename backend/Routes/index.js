@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { newOrder, getMyOrderData } = require('../controller/OrderController');
 const { authenticated } = require('../middleware/auth');
 
 
@@ -8,11 +7,7 @@ const { authenticated } = require('../middleware/auth');
 router.use('/user', require('./user'))
 router.use('/restaurent', require('./restaurent'))
 router.use('/dishes', require('./dishes'))
+router.use('/order', require('./order.js'))
 
-// Route: /api/createOrder
-router.post('/order', authenticated, newOrder);
-
-// Route: /api/myOrderData
-router.post('/myOrderData', getMyOrderData);
 
 module.exports = router;

@@ -40,7 +40,7 @@ export default function Cart() {
 
   return (
     <div className='initialPadding'>
-      <div className='container m-auto mt-5 table-responsive table-responsive-sm table-responsive-md'>
+      <div className='table-responsive table-responsive-sm table-responsive-md' style={{margin : "4rem 8rem"}}>
         <table className='table table-hover '>
           <thead className=' text-success fs-4'>
             <tr>
