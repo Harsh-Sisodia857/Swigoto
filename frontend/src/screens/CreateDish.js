@@ -5,7 +5,7 @@ import './CreateDish.css';
 const CreateDish = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState('');
   const [rating, setRating] = useState('');
   const [restaurantName, setRestaurantName] = useState('');
   const [restaurantId, setRestaurantId] = useState('');
@@ -19,17 +19,19 @@ const CreateDish = () => {
       myForm.append('price', price);
       myForm.append('rating', rating);
       myForm.append('restaurant', restaurantId);
-      myForm.append('images', images[0]);
-      console.log("My form : ",myForm)
+      myForm.append('images', images);
+      console.log("My form : ", myForm)
       const response = await fetch('http://localhost:4000/api/dishes/create', {
         method: 'POST',
         headers: {
+          // "Content-Type": "multipart/form-data",
           'auth-token': localStorage.getItem('token'),
         },
         body: myForm
       });
 
       const data = await response.json();
+      console.log("DATA : ", data);
       alert.show('Dish Created Successfully')
     } catch (error) {
       alert.error('Error while creating dish');
@@ -37,16 +39,7 @@ const CreateDish = () => {
   };
 
   const handleFileChange = (e) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImages(reader.result);
-        }
-      };
-
-      reader.readAsDataURL(e.target.files[0]);
-    
+      setImages(e.target.files[0]);   
   };
 
 
@@ -71,9 +64,21 @@ const CreateDish = () => {
       console.error('Error searching restaurant:', error);
     }
   };
-  console.log(searchResult)
+  const handleRating = (e) => {
+    const val = e.target.value;
+    if (val < 0) {
+      alert.error("Rating Can Never Be Negative");
+      return;
+    }
+    if (val > 5) {
+      alert.error("Select Rating In Between 1 to 5");
+      return
+    }
+    setRating(val);
+  }
+
   return (
-    <div className="container initialMargin">
+    <div className="InitailContainer initialMargin">
       <div className="sidebar">
         <div className='search-box'>
           <h2>Search Restaurants</h2>
@@ -124,7 +129,7 @@ const CreateDish = () => {
             
             <div className="form-group">
               <label htmlFor="price">Price:</label>
-              <input type="number" id="price" value={price} onChange={(e) => setPrice(e.target.value)} />
+              <input type="number" id="price"  value={price} onChange={(e) => setPrice(e.target.value)} />
             </div>
             <div className="form-group">
               <label htmlFor="images">Images:</label>
@@ -137,11 +142,11 @@ const CreateDish = () => {
             </div>
             <div className="form-group">
               <label htmlFor="rating">Rating:</label>
-              <input type="number" id="rating" value={rating} onChange={(e) => setRating(e.target.value)} />
+              <input type="number" id="rating" max={5} value={rating} onChange={(e) => handleRating(e)}/>
             </div>
             <div className="form-group">
               <label htmlFor="name">Restaurant ID:</label>
-              <input type="text" id="name" value={restaurantId} onChange={(e) => setName(e.target.value)} />
+              <input type="text" id="name" value={restaurantId} onChange={(e) => setRestaurantId(e.target.value)} />
             </div>
             <button type="button" onClick={handleCreateDish}>
               Create Dish
