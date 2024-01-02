@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Card from '../components/Card'
+import Card from './Card'
 import { useSelector,useDispatch } from 'react-redux';
 import { loadFoodItems, setFoodItems, setError } from '../store/slice/foodItemSlice';
 import Footer from '../components/Footer'

@@ -1,5 +1,5 @@
 const Restaurant = require('../models/Restaurant');
-
+const Dish = require("../models/Dishes")
 const createRestaurant = async (req, res) => {
     try {
         const { name, address, rating } = req.body;
@@ -50,6 +50,7 @@ const deleteRestaurant = async (req, res) => {
                 error: 'Restaurant not found'
             });
         }
+        await Dish.deleteMany({ restaurant: restaurantId });
         res.json({
             success : true,
             deletedRestaurant
