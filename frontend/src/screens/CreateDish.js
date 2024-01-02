@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useAlert } from 'react-alert'
 import './CreateDish.css';
+import { useRef } from 'react';
 
 const CreateDish = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
-  const [images, setImages] = useState('');
+  const [images, setImages] = useState([]);
   const [rating, setRating] = useState('');
   const [restaurantName, setRestaurantName] = useState('');
   const [restaurantId, setRestaurantId] = useState('');
   const [searchResult, setSearchResult] = useState(null);
+  const fileRef = useRef(null);
   const alert = useAlert()
 
   const handleCreateDish = async () => {
@@ -19,7 +21,10 @@ const CreateDish = () => {
       myForm.append('price', price);
       myForm.append('rating', rating);
       myForm.append('restaurant', restaurantId);
-      myForm.append('images', images);
+      images.forEach((file) => {
+        myForm.append('images', file);
+      });
+
       console.log("My form : ", myForm)
       const response = await fetch('http://localhost:4000/api/dishes/create', {
         method: 'POST',
@@ -32,6 +37,12 @@ const CreateDish = () => {
 
       const data = await response.json();
       console.log("DATA : ", data);
+      setName('');
+      setPrice('');
+      setRating('');
+      setRestaurantId('');
+      setRestaurantName('');
+      fileRef.current.value = '';
       alert.show('Dish Created Successfully')
     } catch (error) {
       alert.error('Error while creating dish');
@@ -39,7 +50,9 @@ const CreateDish = () => {
   };
 
   const handleFileChange = (e) => {
-      setImages(e.target.files[0]);   
+    const selectedFiles = e.target.files;
+    const filesArray = Array.from(selectedFiles);
+    setImages(filesArray);
   };
 
 
@@ -137,6 +150,8 @@ const CreateDish = () => {
                 type="file"
                 id="images"
                 name="images"
+                multiple
+                ref = {fileRef}
                 onChange={handleFileChange}
               />
             </div>

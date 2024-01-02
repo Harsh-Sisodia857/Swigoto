@@ -18,14 +18,21 @@ const createDish = async (req, res) => {
         const { name, rating, price, restaurant: restaurantId } = req.body;
         console.log(req.files)
         // step 4 -- get file using req.files.(Whatever name you have give in model)
-        const images = req.files?.images;
+        const images = req.files?.images || [];
         console.log("Images : ",images)
         const dish = { name, rating, price, restaurant: restaurantId };
         // step 5 -- if uploading image is not required then use if here else remove if
-        if (images) {
-            const response = await uploadFileToCloudinary(images, "Dishes");
-            console.log("Response:", response);
-            dish.images = response.secure_url;
+        if (images && images.length > 0) {
+            const imageUrls = [];
+
+            // Loop through each image and upload to cloudinary as needed
+            for (let i = 0; i < images.length; i++) {
+                const response = await uploadFileToCloudinary(images[i], "Dishes");
+                console.log(`Uploaded image ${i + 1}: ${response.secure_url}`);
+                imageUrls.push(response.secure_url);
+            }
+            // Add the array of image URLs to the dish object
+            dish.images = imageUrls;
         }
 
         // Validate the incoming data
