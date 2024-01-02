@@ -143,10 +143,11 @@ export default function Card({ id, foodName, rating, ImgSrc, price, Quantity }) 
               style={{ height: '38px' }}
             >
               {role !== 'admin' ? (
-                <div>
-                  <button onClick={decreaseQuantity}>-</button>
-                  <input readOnly type="number" value={qty} />
-                  <button onClick={increaseQuantity}>+</button>
+                <div className='d-flex'>
+                  <button onClick={decreaseQuantity} style={{"backgroundColor" : "#171917"}}>-</button>
+                  <input readOnly type="number" value={qty} style={{
+                    "width": "50px", "padding" : "5px 1px 5px 16px"}} />
+                  <button onClick={increaseQuantity} style={{"backgroundColor" : "#171917"}}>+</button>
                 </div>
               ) : (
                 isEditing ? (

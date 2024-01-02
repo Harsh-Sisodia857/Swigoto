@@ -46,10 +46,10 @@
     max-width: 90%;
 }
 
-.container{
+.InitailContainer{
     display: flex;
-    /* width: 100%; */
-    align-items: start;
+    margin-left: 40px;
+    align-items: baseline;
     justify-content: space-between
 }
 
@@ -81,10 +81,6 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
 }
 
 
