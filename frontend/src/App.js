@@ -23,7 +23,7 @@ import CreateRestaurant from './screens/CreateRestaurant.js';
 import DeleteRestaurant from './screens/DeleteRestaurant.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import AdminRoute from './components/AdminRoute.js';
-
+import AuthRedirectSignup from './components/AuthRedirect.js';
 
 function App() {
   useEffect(() => {
@@ -38,8 +38,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/login" element={<AuthRedirectSignup><Login /></AuthRedirectSignup>} />
+        <Route exact path="/signup" element={<AuthRedirectSignup><Signup /></AuthRedirectSignup>} />
         <Route exact path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
         <Route exact path="/shipping" element={<ProtectedRoute><Shipping /></ProtectedRoute>} />
         <Route exact path="/order/confirm" element={<ProtectedRoute><ConfirmOrder /></ProtectedRoute>} />

@@ -28,7 +28,7 @@ export default function Login() {
       console.log(json.userData);
       navigate('/');
     } else {
-      alert('Enter Valid Credentials');
+      alert.error('Enter Valid Credentials');
     }
   };
   const onChange = (e) => {
