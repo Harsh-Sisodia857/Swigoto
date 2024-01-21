@@ -34,7 +34,10 @@ const createUser = async (req, res) => {
         })
             .catch(err => {
                 console.log(err);
-                res.json({ error: "Please enter a unique value." })
+                res.json({
+                    error: "Please enter a unique value.",
+                    message : err
+                })
             })
     } catch (error) {
         console.error(error.message)

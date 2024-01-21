@@ -128,7 +128,7 @@ const getAllDishes = async (req, res) => {
             query.restaurant = { $in: matchingRestaurants.map(restaurant => restaurant._id) };
         }
 
-        console.log(query)
+        console.log("Query : ",query)
     
         const dishes = await Dish.find(query).populate('restaurant');
         return res.json({

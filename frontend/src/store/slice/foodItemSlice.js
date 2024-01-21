@@ -11,9 +11,7 @@ export const foodItemSlice = createSlice({
     initialState,
     reducers: {
         setFoodItems: (state, action) => {
-            console.log(action.payload);
             state.dishes = action.payload;
-            console.log(state.dishes);
             state.status = 'succeeded';
         },
         setError: (state, action) => {
@@ -36,9 +34,11 @@ export const foodItemSlice = createSlice({
 export const { setFoodItems, setError, updateFoodItem } = foodItemSlice.actions;
 export default foodItemSlice.reducer;
 
-export const loadFoodItems = () => async (queryParams) => {
+export const loadFoodItems = (queryParams) => async (dispatch) => {
     try {
+        console.log("Query Param : ", queryParams);
         const queryString = new URLSearchParams(queryParams).toString();
+        console.log("Query String : ", queryString);
         const response = await fetch(`http://localhost:4000/api/dishes/?${queryString}`, {
             method: 'GET',
             headers: {
@@ -46,11 +46,14 @@ export const loadFoodItems = () => async (queryParams) => {
             },
         });
         const data = await response.json();
+
         return data;
     } catch (error) {
-        throw error;
+        // If an error occurs, dispatch the setError action
+        dispatch(setError({ error: error.message }));
     }
 };
+
 
 export const setFoodItemAfterDeletion = (id) => async (dispatch, getState) => {
     const { dishes } = getState().foodItem;

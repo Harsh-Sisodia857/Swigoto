@@ -26,8 +26,8 @@ export default function Navbar() {
     const handleSearch = () => {
         dispatch(setSearchQuery(query));
         dispatch(setFilterQuery(selectedFilter?.value));
-        // console.log('Search Query:', query);
-        // console.log('Selected Filter:', selectedFilter?.value);
+        console.log('Search Query:', query);
+        console.log('Selected Filter:', selectedFilter?.value);
     };
 
     return (

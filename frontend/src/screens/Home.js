@@ -10,14 +10,13 @@ export default function Home() {
   const { dishes: foodItems, status, error } = useSelector((state) => state.foodItem);
   const { searchQuery, filterQuery } = useSelector((state) => state.searchQuery);
 
-  // console.log("Search query : ",searchQuery)
-  // console.log("filter query : ", filterQuery)
+  console.log("Search query : ",searchQuery)
+  console.log("filter query : ", filterQuery)
   useEffect(() => {
     const fetchFoodItems = async () => {
       try {
-      
         const queryParams = filterQuery === 'restaurant' ? { restaurant: searchQuery } : { dish: searchQuery };
-
+        console.log("Query Params : ",queryParams)
         const data = await dispatch(loadFoodItems(queryParams));
         dispatch(setFoodItems(data.dishes));
       } catch (error) {
@@ -27,7 +26,7 @@ export default function Home() {
 
     fetchFoodItems();
   }, [searchQuery, filterQuery, dispatch]);
-
+  console.log(foodItems)
   return (
     <div >
       <div>
@@ -38,7 +37,7 @@ export default function Home() {
       </div>
       <div className='container'>
         <div className='row mb-3'>
-          {foodItems && foodItems.length !== 0 ? (
+          {foodItems && foodItems.length > 0 ? (
             foodItems.map(item => (
               <div key={item._id} className='col-12 col-md-6 col-lg-3'>
                 <Card id={item._id} foodName={item.name} item={item} rating={item.rating} price={item.price} Quantity={1} ImgSrc={item.images} />

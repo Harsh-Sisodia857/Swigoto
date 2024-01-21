@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../App.css';
+import { useAlert } from 'react-alert'
 
 export default function Signup() {
   const [credentials, setCredentials] = useState({ name: '', email: '', password: '', location: {} });
   const [fetchedLocation, setFetchedLocation] = useState(null);
   const navigate = useNavigate();
+  const alert = useAlert()
 
   useEffect(() => {
     if (fetchedLocation) {
@@ -25,6 +27,7 @@ export default function Signup() {
           },
           (error) => {
             reject(error.message);
+            alert.error(error.message)
           }
         );
       });
@@ -49,19 +52,40 @@ export default function Signup() {
           // Check if location contains 'undefined', and remove it
           const Location = json.location;
           setFetchedLocation(Location);
+          alert.show('Location Fetched Successfully')
         } else {
-          alert(`Error fetching location: ${json.error}`);
+          alert.error(`Error fetching location: ${json.error}`);
         }
       })
       .catch((error) => {
         console.error('Error fetching location:', error);
         // Handle error, show a message to the user, etc.
-        alert(`Error fetching location: ${error}`);
+        alert.error(`Error fetching location: ${error}`);
       });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!credentials.name) {
+      alert.error('Name is required');
+      return;
+    }
+
+    if (!credentials.email) {
+      alert.error('Email is required');
+      return;
+    }
+
+    if (!credentials.password) {
+      alert.error('Password is required');
+      return;
+    }
+
+    if (!credentials.location.length <= 0) {
+      alert.error('Location is required');
+      return;
+    }
+
     const response = await fetch('http://localhost:4000/api/user/createuser', {
       method: 'POST',
       headers: {
@@ -77,9 +101,9 @@ export default function Signup() {
     const json = await response.json();
     if (json.success) {
       localStorage.setItem('token', json.authToken);
-      navigate('/login');
+      navigate('/');
     } else {
-      alert('Enter Valid Credentials');
+      alert.error('Enter Valid Credentials');
     }
   };
 
@@ -93,20 +117,25 @@ export default function Signup() {
         <form className="w-50 m-auto mt-5 border rounded p-4" style={{ background: 'rgba(0, 0, 0, 0.7)' }} onSubmit={handleSubmit}>
           <div className="m-3">
             <label htmlFor="name" className="form-label text-white">
-              Name
+              Name<span style={{ color: 'red' }}>*</span>
             </label>
             <input type="text" className="form-control" name="name" value={credentials.name} onChange={onChange} aria-describedby="emailHelp" />
           </div>
           <div className="m-3">
             <label htmlFor="email" className="form-label text-white">
-              Email address
+              Email address<span style={{ color: 'red' }}>*</span>
             </label>
             <input type="email" className="form-control" name="email" value={credentials.email} onChange={onChange} aria-describedby="emailHelp" />
           </div>
 
           <div className="m-3">
             <label htmlFor="location" className="form-label text-white">
-              Location
+              Location<span style={{ color: 'red' }}>*</span>
+              {fetchedLocation && (
+                <span style={{ color: 'green', marginLeft: '5px' }}>
+                  <img src="./tick.png" alt="Tick Icon" style={{ width: '20px', height: '20px', margin : '3px' }} />
+                </span>
+              )}
             </label>
             {/* <fieldset>
               <input type="text" className="form-control" name="location" value={credentials.location} placeholder="Click below for fetching location" onChange={(e) => setCredentials({ ...credentials, location: e.target.value })} aria-describedby="emailHelp" />
@@ -120,7 +149,7 @@ export default function Signup() {
           </div>
           <div className="m-3">
             <label htmlFor="password" className="form-label text-white">
-              Password
+              Password<span style={{ color: 'red' }}>*</span>
             </label>
             <input type="password" className="form-control" value={credentials.password} onChange={onChange} name="password" />
           </div>
